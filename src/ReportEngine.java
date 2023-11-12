@@ -2,21 +2,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ReportEngine {
-    static ArrayList<MonthTotalPerYear> yearlyReports = new ArrayList<>();
-    static HashMap<String, ArrayList<Transaction>> monthlyTransactions = new HashMap<>();
-    static ArrayList<Transaction> monthlyReports = new ArrayList<>();
+    private static FileReader fileReader;
+    private static HashMap<Integer, ArrayList<Transaction>> monthlyTransactions;
+    static ArrayList<Transaction> monthlyReports;
+    static ArrayList<MonthTotalPerYear> yearlyReports;
+    public ReportEngine() {
+        fileReader = new FileReader();
+        monthlyTransactions = new HashMap<>();
+        monthlyReports = new ArrayList<>();
+        yearlyReports = new ArrayList<>();
+    }
     public static void readMonthlyReports() {
         FileReader fileReader = new FileReader();
-        String[] fileNames = {"m.202101.csv", "m.202102.csv", "m.202103.csv"};
-        monthlyReports.clear();
-        for (String fileName : fileNames) {
+        for (int month = 1; month <= 3; month++) {
+            String fileName = "m.20210" + month + ".csv";
             ArrayList<String> lines = fileReader.readFileContents(fileName);
+            ArrayList<Transaction> monthTransactions = new ArrayList<>();
+
             for (int i = 1; i < lines.size(); i++) {
                 String[] parts = lines.get(i).split(",");
                 Transaction transaction = new Transaction(parts[0], Boolean.parseBoolean(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
-                monthlyReports.add(transaction);
+                monthTransactions.add(transaction);
             }
+
+            monthlyTransactions.put(month, monthTransactions);
         }
+
+        System.out.println("Месячные отчёты загружены!");
     }
 
     public static void readYearlyReports() {
@@ -35,34 +47,43 @@ public class ReportEngine {
             return;
         }
 
-        for (String month : monthlyTransactions.keySet()) {
-            int totalIncome = 0;
-            int totalExpense = 0;
+        // Логика сравнения отчетов
+    }
 
-            for (Transaction transaction : monthlyTransactions.get(month)) {
-                int amount = transaction.quantity * transaction.unitPrice;
-                if (transaction.isExpense) {
-                    totalExpense += amount;
-                } else {
-                    totalIncome += amount;
+    public void getMaxProfitOrder(int month) {
+        int maxProfit = 0;
+        String maxProfitItem = null;
+        ArrayList<Transaction> transactions = monthlyTransactions.get(month);
+        if (transactions != null) {
+            for (Transaction transaction : transactions) {
+                if (!transaction.isExpense) {
+                    int profit = transaction.quantity * transaction.unitPrice;
+                    if (profit > maxProfit) {
+                        maxProfit = profit;
+                        maxProfitItem = transaction.itemName;
+                    }
                 }
-            }
-            MonthTotalPerYear monthTotalPerYear = yearlyReports.get(Integer.parseInt(month));
-            if (monthTotalPerYear != null) {
-                System.out.println("Отчет за месяц " + month + ":");
-                System.out.println("Общий доход: " + totalIncome + " / Доход по годовому отчету: " + monthTotalPerYear.amount);
-                System.out.println("Общий расход: " + totalExpense + " / Расход по годовому отчету: " + monthTotalPerYear.amount);
-                if (totalIncome == monthTotalPerYear.amount && totalExpense == monthTotalPerYear.amount) {
-                    System.out.println("Месячные данные соответствуют годовому отчету.");
-                } else {
-                    System.out.println("Расхождение в данных месячного и годового отчетов.");
-                }
-            } else {
-                System.out.println("Годовой отчет за месяц " + month + " отсутствует.");
             }
         }
+        System.out.println("Самый прибыльный товар за месяц " + month + ": " + maxProfitItem + " с прибылью " + maxProfit);
+    }
 
-
+    public void getMaxSpendOrder(int month) {
+        int maxSpend = 0;
+        String maxSpendItem = null;
+        ArrayList<Transaction> transactions = monthlyTransactions.get(month);
+        if (transactions != null) {
+            for (Transaction transaction : transactions) {
+                if (transaction.isExpense) {
+                    int spend = transaction.quantity * transaction.unitPrice;
+                    if (spend > maxSpend) {
+                        maxSpend = spend;
+                        maxSpendItem = transaction.itemName;
+                    }
+                }
+            }
+        }
+        System.out.println("Самая большая трата за месяц " + month + ": " + maxSpendItem + " с затратами " + maxSpend);
     }
     public static void printMonthlyReports() {
         if (monthlyReports.isEmpty()) {
