@@ -13,12 +13,7 @@ public class MonthlyReport {
     public void printReport() {
         System.out.println("Месячный отчет:");
         for (Transaction transaction : transactions) {
-            String type;
-            if (transaction.isExpense) {
-                type = "Расход";
-            } else {
-                type = "Доход";
-            }
+            String type = transaction.isExpense ? "Расход" : "Доход";
             System.out.println("Товар: " + transaction.itemName + ", Тип: " + type + ", Количество: " + transaction.quantity + ", Цена за единицу: " + transaction.unitPrice);
         }
     }

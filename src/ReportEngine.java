@@ -47,14 +47,12 @@ public class ReportEngine {
                     totalIncome += amount;
                 }
             }
-            YearlyData yearlyData = yearlyReports.get(month);
-            if (yearlyData != null) {
+            MonthTotalPerYear monthTotalPerYear = yearlyReports.get(Integer.parseInt(month));
+            if (monthTotalPerYear != null) {
                 System.out.println("Отчет за месяц " + month + ":");
-                System.out.println("Общий доход: " + totalIncome + " / Доход по годовому отчету: " + yearlyData.getIncome());
-                System.out.println("Общий расход: " + totalExpense + " / Расход по годовому отчету: " + yearlyData.getExpense());
-
-                // Проверка на соответствие
-                if (totalIncome == yearlyData.getIncome() && totalExpense == yearlyData.getExpense()) {
+                System.out.println("Общий доход: " + totalIncome + " / Доход по годовому отчету: " + monthTotalPerYear.amount);
+                System.out.println("Общий расход: " + totalExpense + " / Расход по годовому отчету: " + monthTotalPerYear.amount);
+                if (totalIncome == monthTotalPerYear.amount && totalExpense == monthTotalPerYear.amount) {
                     System.out.println("Месячные данные соответствуют годовому отчету.");
                 } else {
                     System.out.println("Расхождение в данных месячного и годового отчетов.");
@@ -62,6 +60,7 @@ public class ReportEngine {
             } else {
                 System.out.println("Годовой отчет за месяц " + month + " отсутствует.");
             }
+        }
 
 
     }
