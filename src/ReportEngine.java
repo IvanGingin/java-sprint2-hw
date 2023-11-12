@@ -46,9 +46,24 @@ public class ReportEngine {
                 } else {
                     totalIncome += amount;
                 }
-
             }
-        }
+            YearlyData yearlyData = yearlyReports.get(month);
+            if (yearlyData != null) {
+                System.out.println("Отчет за месяц " + month + ":");
+                System.out.println("Общий доход: " + totalIncome + " / Доход по годовому отчету: " + yearlyData.getIncome());
+                System.out.println("Общий расход: " + totalExpense + " / Расход по годовому отчету: " + yearlyData.getExpense());
+
+                // Проверка на соответствие
+                if (totalIncome == yearlyData.getIncome() && totalExpense == yearlyData.getExpense()) {
+                    System.out.println("Месячные данные соответствуют годовому отчету.");
+                } else {
+                    System.out.println("Расхождение в данных месячного и годового отчетов.");
+                }
+            } else {
+                System.out.println("Годовой отчет за месяц " + month + " отсутствует.");
+            }
+
+
     }
     public static void printMonthlyReports() {
         if (monthlyReports.isEmpty()) {
@@ -68,6 +83,7 @@ public class ReportEngine {
                     ", Цена за единицу: " + transaction.unitPrice);
         }
     }
+
     public static void printYearlyReports() {
         if (yearlyReports.isEmpty()) {
             System.out.println("Годовые отчеты не загружены.");
