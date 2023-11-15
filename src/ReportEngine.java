@@ -11,12 +11,9 @@ public class ReportEngine {
             System.out.println("Необходимо сначала считать все отчеты.");
             return;
         }
-
         boolean discrepancyFound = false;
         HashMap<String, Integer> monthlyIncome = new HashMap<>();
         HashMap<String, Integer> monthlyExpenses = new HashMap<>();
-
-
         for (Transaction transaction : monthlyReports) {
             String month = transaction.month;
             int amount = transaction.quantity * transaction.unitPrice;
@@ -27,7 +24,6 @@ public class ReportEngine {
                 monthlyIncome.put(month, monthlyIncome.getOrDefault(month, 0) + amount);
             }
         }
-
 
         for (MonthTotalPerYear yearReportItem : yearlyReports) {
             String month = yearReportItem.month;
@@ -46,8 +42,6 @@ public class ReportEngine {
             System.out.println("Все отчеты успешно сверены. Несоответствий не обнаружено.");
         }
     }
-
-
 }
 
 
