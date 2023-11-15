@@ -1,28 +1,35 @@
 import java.util.ArrayList;
-
+import java.util.HashMap;
 public class YearlyReport {
-    private ArrayList<MonthTotalPerYear> reports;
 
-    public YearlyReport() {
-        reports = new ArrayList<>();
+    static ArrayList<MonthTotalPerYear> yearlyReports = new ArrayList<>();
+
+    public static void readYearlyReports() {
+        FileReader fileReader = new FileReader();
+        ArrayList<String> lines = fileReader.readFileContents("y.2021.csv");
+        for (int i = 1; i < lines.size(); i++) {
+            String[] parts = lines.get(i).split(",");
+            MonthTotalPerYear item = new MonthTotalPerYear(parts[0], Integer.parseInt(parts[1]), Boolean.parseBoolean(parts[2]));
+            yearlyReports.add(item);
+        }
     }
 
-    public void addReportItem (MonthTotalPerYear item) {
-        reports.add(item);
-    }
 
-    public void printReport() {
-        System.out.println("Годовой отчет:");
-        for (MonthTotalPerYear item : reports) {
+    public static void printYearlyReports() {
+        if (yearlyReports.isEmpty()) {
+            System.out.println("Годовые отчеты не загружены.");
+            return;
+        }
+
+        System.out.println("Информация о годовых отчетах:");
+        for (MonthTotalPerYear reportItem : yearlyReports) {
             String type;
-            if (item.isExpense) {
+            if (reportItem.isExpense) {
                 type = "Расход";
             } else {
                 type = "Доход";
             }
-            System.out.println("Месяц: " + item.month +
-                    ", Сумма: " + item.amount +
-                    ", Тип: " + type);
+            System.out.println("Месяц: " + reportItem.month + ", Сумма: " + reportItem.amount + ", Тип: " + type);
         }
     }
 }

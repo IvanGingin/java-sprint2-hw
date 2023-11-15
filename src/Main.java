@@ -6,19 +6,19 @@ public class Main {
             printMenu();
             int command = scanner.nextInt();
             if (command == 1) {
-                ReportEngine.readMonthlyReports();
+                MonthlyReport.readMonthlyReports();
 
             } else if (command == 2) {
-                ReportEngine.readYearlyReports();
+                YearlyReport.readYearlyReports();
 
             } else if (command == 3) {
                 ReportEngine.compareReports();
 
             } else if (command == 4) {
-                ReportEngine.printMonthlyReports();
+                MonthlyReport.printMonthlyReports();
 
             } else if (command == 5) {
-                ReportEngine.printYearlyReports();
+                YearlyReport.printYearlyReports();
 
             } else if (command == 0) {
                 System.out.println("Выход");
