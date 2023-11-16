@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MonthlyReport {
-    private static HashMap<String, ArrayList<Transaction>> monthlyTransactions = new HashMap<>();
+    public static HashMap<String, ArrayList<Transaction>> monthlyTransactions = new HashMap<>();
 
     public static void readMonthlyReports() {
         FileReader fileReader = new FileReader();
@@ -35,15 +35,6 @@ public class MonthlyReport {
             getMaxProfitOrder(month);
             getMaxSpendOrder(month);
 
-            for (Transaction transaction : monthlyTransactions.get(month)) {
-                System.out.print("Товар: " + transaction.name + ", Тип: ");
-                if (transaction.isExpense) {
-                    System.out.print("Расход");
-                } else {
-                    System.out.print("Доход");
-                }
-                System.out.println(", Количество: " + transaction.quantity + ", Цена за единицу: " + transaction.unitPrice);
-            }
         }
     }
 

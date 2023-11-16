@@ -12,6 +12,7 @@ public class Main {
                 YearlyReport.readYearlyReports();
 
             } else if (command == 3) {
+
                 ReportEngine.compareReports();
 
             } else if (command == 4) {
