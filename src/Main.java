@@ -1,31 +1,39 @@
 import java.util.Scanner;
+enum Command {
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE
+
+}
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             printMenu();
             int command = scanner.nextInt();
-            if (command == 1) {
-                MonthlyReport.readMonthlyReports();
-
-            } else if (command == 2) {
-                YearlyReport.readYearlyReports();
-
-            } else if (command == 3) {
-
-                ReportEngine.compareReports();
-
-            } else if (command == 4) {
-                MonthlyReport.printMonthlyReports();
-
-            } else if (command == 5) {
-                YearlyReport.printYearlyReports();
-
-            } else if (command == 0) {
+            if (command == 0) {
                 System.out.println("Выход");
                 break;
-            } else {
+            }
+            if (command < 1 || command > Command.values().length){
+
                 System.out.println("Извините, такой команды пока нет.");
+                continue;
+            }
+            Command commandName = Command.values()[command - 1];
+            switch (commandName) {
+                case ONE:
+                    MonthlyReport.readMonthlyReports(); break;
+                case TWO:
+                    YearlyReport.readYearlyReports(); break;
+                case THREE:
+                    ReportEngine.compareReports(); break;
+                case FOUR:
+                    MonthlyReport.printMonthlyReports(); break;
+                case FIVE:
+                    YearlyReport.printYearlyReports(); break;
             }
         }
     }
